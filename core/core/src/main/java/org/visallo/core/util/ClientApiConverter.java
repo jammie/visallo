@@ -213,14 +213,10 @@ public class ClientApiConverter extends org.visallo.web.clientapi.util.ClientApi
             SandboxStatus sandboxStatus = sandboxStatuses[i];
             VideoFrameInfo videoFrameInfo;
             if ((videoFrameInfo = VideoPropertyHelper.getVideoFrameInfoFromProperty(property)) != null) {
-                String textDescription = VisalloProperties.TEXT_DESCRIPTION_METADATA.getMetadataValueOrDefault(
-                        property.getMetadata(),
-                        null
-                );
                 addVideoFramePropertyToResults(
                         clientApiProperties,
                         videoFrameInfo.getPropertyKey(),
-                        textDescription,
+                        property.getMetadata(),
                         sandboxStatus
                 );
             } else {
@@ -254,7 +250,7 @@ public class ClientApiConverter extends org.visallo.web.clientapi.util.ClientApi
     private static void addVideoFramePropertyToResults(
             List<ClientApiProperty> clientApiProperties,
             String propertyKey,
-            String textDescription,
+            Metadata metadata,
             SandboxStatus sandboxStatus
     ) {
         ClientApiProperty clientApiProperty = findProperty(
@@ -267,10 +263,9 @@ public class ClientApiConverter extends org.visallo.web.clientapi.util.ClientApi
             clientApiProperty.setKey(propertyKey);
             clientApiProperty.setName(MediaVisalloProperties.VIDEO_TRANSCRIPT.getPropertyName());
             clientApiProperty.setSandboxStatus(sandboxStatus);
-            clientApiProperty.getMetadata().put(
-                    VisalloProperties.TEXT_DESCRIPTION_METADATA.getMetadataKey(),
-                    textDescription
-            );
+            for (Metadata.Entry entry : metadata.entrySet()) {
+                clientApiProperty.getMetadata().put(entry.getKey(), toClientApiValue(entry.getValue()));
+            }
             clientApiProperty.setStreamingPropertyValue(true);
             clientApiProperties.add(clientApiProperty);
         }
