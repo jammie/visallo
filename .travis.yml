@@ -4,7 +4,7 @@ services:
 language: java
 env:
   - BUILD_PROJECT=1 DOCKER_IMAGE="visallo/travis:visallo-4.0.0"
-  - BUILD_DOCS=1 VERSION_LIST="release-3.1 release-4.0 master" VERSION_ROOT="release-3.1" DOCKER_IMAGE="visallo/travis:visallo-4.0.0"
+  - BUILD_DOCS=1 VERSION_LIST="release-3.1 release-4.0 master" VERSION_ROOT="release-4.0" DOCKER_IMAGE="visallo/travis:visallo-4.0.0"
 before_install:
   - docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
   - docker pull ${DOCKER_IMAGE}
